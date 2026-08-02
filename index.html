@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Fines Lookup | SELENS</title>
+    <!-- Add your SELENS favicon here if you have one -->
+    <!-- <link rel="icon" href="path/to/favicon.ico" type="image/x-icon"> -->
+    <style>
+        /* CSS Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff; /* White dominant background */
+            color: #000000; /* Black for text */
+        }
+        .header {
+            background-color: #000000; /* Black background for header */
+            color: #ffffff; /* White text */
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .header .logo {
+            max-width: 150px; /* Adjust as needed */
+            margin-bottom: 10px;
+            /* Placeholder for your logo: */
+            /* Add <img src="your-logo.png" alt="SELENS Logo"> here when ready */
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #ffffff; /* White background for main content */
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .file-upload {
+            margin-bottom: 20px;
+            border: 2px dashed #ffcc00; /* Yellow accent for upload area */
+            padding: 20px;
+            text-align: center;
+            background-color: #fffde0; /* Very light yellow for focus */
+        }
+        input[type="file"] {
+            display: none;
+        }
+        .custom-file-upload {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ffcc00; /* Yellow primary button color */
+            color: #000000; /* Black text on yellow button */
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .custom-file-upload:hover {
+            background-color: #e6b800; /* Darker yellow on hover */
+        }
+        .search-area {
+            display: none; /* Hidden until file is uploaded */
+            text-align: center;
+        }
+        .search-area h2 {
+            margin-bottom: 15px;
+        }
+        #searchInput {
+            padding: 10px;
+            border: 1px solid #ffcc00; /* Yellow border */
+            border-radius: 4px;
+            width: 70%;
+            margin-right: 10px;
+        }
+        #searchButton {
+            padding: 10px 20px;
+            background-color: #000000; /* Black button for contrast */
+            color: #ffffff; /* White text */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #searchButton:hover {
+            background-color: #333333; /* Darker grey on hover */
+        }
+        #results {
+            margin-top: 20px;
+            text-align: left;
+        }
+        .student-fine-info {
+            background-color: #ffffff; /* White background for fine cards */
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .student-fine-info h3 {
+            margin-top: 0;
+            color: #000000;
+        }
+        .student-fine-info p {
+            margin: 5px 0;
+        }
+        .no-records {
+            text-align: center;
+            font-style: italic;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <!-- Add your SELENS logo here when ready: <img src="logo.png" alt="SELENS Logo"> -->
+            <!-- Placeholder -->
+            <img src="placeholder_logo.png" alt="SELENS Logo (PLACEHOLDER)" style="background-color: #fff; padding: 5px; border-radius: 4px;">
+        </div>
+        <h1>SELENS Student Fines Lookup</h1>
+    </div>
+
+    <div class="container">
+        <!-- 1. File Upload Area -->
+        <div class="file-upload" id="fileUploadArea">
+            <p>Upload your fines data Excel file (`.xlsx`).</p>
+            <label for="excelFile" class="custom-file-upload">
+                Choose Excel File
+            </label>
+            <input type="file" id="excelFile" accept=".xlsx" />
+        </div>
+
+        <!-- 2. Search Area (hidden initially) -->
+        <div class="search-area" id="searchArea">
+            <h2>Enter Student Information</h2>
+            <input type="text" id="searchInput" placeholder="Enter Student Name or ID...">
+            <button id="searchButton" onclick="lookupFine()">Search</button>
+            <div id="results">
+                <!-- Search results will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- SheetJS Library -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
+    <script>
+        // JavaScript Code
+        let studentData = []; // Store parsed data globally
+
+        const excelFileInput = document.getElementById('excelFile');
+        const fileUploadArea = document.getElementById('fileUploadArea');
+        const searchArea = document.getElementById('searchArea');
+        const searchInput = document.getElementById('searchInput');
+        const resultsDiv = document.getElementById('results');
+
+        // Handle File Selection
+        excelFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) {
+                return;
+            }
+
+            const reader = new FileReader();
+
+            reader.onload = (event) => {
+                const data = event.target.result;
+                const workbook = XLSX.read(data, { type: 'binary' });
+
+                // Process the first sheet
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert worksheet to JSON data
+                studentData = XLSX.utils.sheet_to_json(worksheet, { defval: "" }); // Use "" for empty cells
+
+                // After data is loaded, switch views
+                fileUploadArea.style.display = 'none';
+                searchArea.style.display = 'block';
+            };
+
+            reader.readAsBinaryString(file);
+        });
+
+        // Handle Fine Lookup
+        function lookupFine() {
+            const query = searchInput.value.trim().toLowerCase();
+            if (!query) {
+                resultsDiv.innerHTML = "<p class='no-records'>Please enter a search term.</p>";
+                return;
+            }
+
+            // Filter data based on search query (search Student Name or Student ID)
+            const matches = studentData.filter(student => {
+                const nameMatch = student['Student Name'] && student['Student Name'].toString().toLowerCase().includes(query);
+                const idMatch = student['Student ID'] && student['Student ID'].toString().toLowerCase().includes(query);
+                return nameMatch || idMatch;
+            });
+
+            // Display Results
+            resultsDiv.innerHTML = ""; // Clear previous results
+
+            if (matches.length > 0) {
+                matches.forEach(student => {
+                    const studentDiv = document.createElement('div');
+                    studentDiv.className = 'student-fine-info';
+                    studentDiv.innerHTML = `
+                        <h3>${student['Student Name'] || 'N/A'}</h3>
+                        <p><strong>Student ID:</strong> ${student['Student ID'] || 'N/A'}</p>
+                        <p><strong>Major:</strong> ${student['Major'] || 'N/A'}</p>
+                        <p><strong>Total Fine:</strong> $${(student['Fine Amount'] || 0).toFixed(2)}</p>
+                        <p><strong>Reason for Fine:</strong> ${student['Reason for Fine'] || 'N/A'}</p>
+                    `;
+                    resultsDiv.appendChild(studentDiv);
+                });
+            } else {
+                resultsDiv.innerHTML = "<p class='no-records'>No student matching that query found.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
