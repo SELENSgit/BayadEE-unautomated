@@ -9,11 +9,13 @@
       --bg-color: #f8f9fa;
       --card-bg: #ffffff;
       --primary-yellow: #ffcc00;
+      --glow-yellow: #ffe566;
       --hover-yellow: #e6b800;
-      --dark-header: #121212;
+      --dark-header: #0a0a0c;
       --text-main: #212529;
       --text-muted: #6c757d;
       --border-color: #e9ecef;
+      --cyber-grid: rgba(255, 204, 0, 0.07);
     }
 
     * {
@@ -27,42 +29,71 @@
       background-color: var(--bg-color);
       color: var(--text-main);
       min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
+    /* Futuristic Header Design */
     .header {
+      position: relative;
       background-color: var(--dark-header);
+      background-image: 
+        linear-gradient(var(--cyber-grid) 1px, transparent 1px),
+        linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px);
+      background-size: 24px 24px;
       color: #ffffff;
-      padding: 30px 20px 25px;
+      padding: 35px 20px 30px;
       text-align: center;
-      border-bottom: 5px solid var(--primary-yellow);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-bottom: 4px solid var(--primary-yellow);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+    }
+
+    /* Subtle Futuristic Background Glow Behind Logo */
+    .header::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(255, 204, 0, 0.12) 0%, transparent 70%);
+      pointer-events: none;
     }
 
     .header .logo img {
-      max-width: 130px;
+      position: relative;
+      max-width: 135px;
       height: auto;
-      margin-bottom: 6px;
+      margin-bottom: 8px;
+      filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.3));
     }
 
     .sub-logo {
+      position: relative;
       color: var(--primary-yellow);
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 1px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 2px;
       text-transform: uppercase;
       margin-bottom: 12px;
+      text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
     }
 
     .header h1 {
+      position: relative;
       font-size: 24px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
     }
 
     .container {
       max-width: 780px;
       margin: 35px auto;
       padding: 0 20px;
+      flex: 1;
     }
 
     .search-card {
@@ -93,7 +124,7 @@
     input[type="text"]:focus {
       border-color: var(--primary-yellow);
       background-color: #ffffff;
-      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.2);
+      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.25);
     }
 
     button {
@@ -106,11 +137,14 @@
       border: none;
       border-radius: 8px;
       transition: all 0.2s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     button:hover {
       background-color: var(--hover-yellow);
       transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
     }
 
     .record-card {
@@ -150,8 +184,8 @@
     }
 
     .data-label {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--text-muted);
@@ -193,6 +227,29 @@
       border-radius: 8px;
       border: 1px solid var(--border-color);
     }
+
+    /* Footer / Disclaimer Section */
+    .footer {
+      background-color: var(--dark-header);
+      color: #a0a0a0;
+      text-align: center;
+      padding: 25px 20px;
+      font-size: 12px;
+      border-top: 1px solid #222225;
+      margin-top: 40px;
+    }
+
+    .footer p {
+      margin: 4px 0;
+      line-height: 1.5;
+    }
+
+    .footer .disclaimer {
+      max-width: 650px;
+      margin: 8px auto 0;
+      font-size: 11px;
+      color: #777;
+    }
   </style>
 </head>
 <body>
@@ -221,12 +278,19 @@
     <div id="result"></div>
   </div>
 
+  <div class="footer">
+    <p><strong>© 2026 Society of Electrical Engineering Students (SELENS). All Rights Reserved.</strong></p>
+    <p class="disclaimer">
+      <em>Disclaimer:</em> Fine records and transaction statuses displayed on this portal are synchronized with the official departmental ledger. For payment verification or discrepancies, please contact the SELENS Treasury Department.
+    </p>
+  </div>
+
   <!-- SheetJS Library -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script>
     let studentData = [];
 
-    // Load fines.xlsx automatically on page load
+    // Automatically load fines.xlsx on startup
     window.addEventListener('DOMContentLoaded', () => {
       fetch('fines.xlsx')
         .then(res => {
@@ -245,7 +309,7 @@
         });
     });
 
-    // Parse Excel numeric dates to YYYY-MM-DD
+    // Format Excel dates to YYYY-MM-DD
     function formatDate(val) {
       if (!val || val === 'N/A') return 'N/A';
       if (val instanceof Date) return val.toISOString().split('T')[0];
@@ -268,7 +332,7 @@
         return;
       }
 
-      // Check all object values for matches to avoid header space mismatches
+      // Check all object values to handle column spacing variations seamlessly
       const matches = studentData.filter(row => {
         return Object.values(row).some(value => 
           String(value).toLowerCase().includes(query)
