@@ -5,104 +5,193 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Fines Lookup | SELENS</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
+    :root {
+      --bg-color: #f8f9fa;
+      --card-bg: #ffffff;
+      --primary-yellow: #ffcc00;
+      --hover-yellow: #e6b800;
+      --dark-header: #121212;
+      --text-main: #212529;
+      --text-muted: #6c757d;
+      --border-color: #e9ecef;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      background-color: #ffffff;
-      color: #000000;
     }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+    }
+
     .header {
-      background-color: #000000;
+      background-color: var(--dark-header);
       color: #ffffff;
-      padding: 20px;
+      padding: 30px 20px 25px;
       text-align: center;
-      border-bottom: 4px solid #ffcc00;
+      border-bottom: 5px solid var(--primary-yellow);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
     }
+
     .header .logo img {
-      max-width: 140px;
+      max-width: 130px;
       height: auto;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
     }
+
+    .sub-logo {
+      color: var(--primary-yellow);
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
     .header h1 {
-      margin: 0;
-      font-size: 22px;
+      font-size: 24px;
+      font-weight: 700;
       letter-spacing: 0.5px;
     }
+
     .container {
-      max-width: 750px;
-      margin: 30px auto;
-      padding: 20px;
-      background-color: #ffffff;
+      max-width: 780px;
+      margin: 35px auto;
+      padding: 0 20px;
     }
+
+    .search-card {
+      background: var(--card-bg);
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+      margin-bottom: 25px;
+      border: 1px solid var(--border-color);
+    }
+
     .search-box {
       display: flex;
-      gap: 10px;
-      margin-bottom: 25px;
+      gap: 12px;
     }
+
     input[type="text"] {
       flex: 1;
-      padding: 12px;
+      padding: 14px 18px;
       font-size: 15px;
-      border: 2px solid #ffcc00;
-      border-radius: 6px;
+      border: 2px solid var(--border-color);
+      border-radius: 8px;
       outline: none;
+      transition: all 0.2s ease;
+      background-color: #fafafa;
     }
+
     input[type="text"]:focus {
-      border-color: #000000;
+      border-color: var(--primary-yellow);
+      background-color: #ffffff;
+      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.2);
     }
+
     button {
-      padding: 12px 24px;
+      padding: 14px 28px;
       font-size: 15px;
-      font-weight: bold;
+      font-weight: 700;
       cursor: pointer;
-      background-color: #ffcc00;
+      background-color: var(--primary-yellow);
       color: #000000;
       border: none;
-      border-radius: 6px;
-      transition: background-color 0.2s;
+      border-radius: 8px;
+      transition: all 0.2s ease;
     }
+
     button:hover {
-      background-color: #e6b800;
+      background-color: var(--hover-yellow);
+      transform: translateY(-1px);
     }
+
     .record-card {
-      border: 1px solid #e0e0e0;
-      border-left: 6px solid #ffcc00;
-      border-radius: 6px;
-      padding: 20px;
-      margin-top: 15px;
-      background-color: #ffffff;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      margin-top: 16px;
+      border: 1px solid var(--border-color);
+      border-left: 6px solid var(--primary-yellow);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
     }
-    .record-card h3 {
-      margin-top: 0;
-      margin-bottom: 12px;
-      color: #000000;
-      border-bottom: 1px solid #f0f0f0;
-      padding-bottom: 8px;
+
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 14px;
+      margin-bottom: 16px;
     }
+
+    .record-header h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--dark-header);
+    }
+
     .record-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px 20px;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px 24px;
     }
-    .record-grid p {
-      margin: 4px 0;
+
+    .data-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .data-label {
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    .data-value {
       font-size: 14px;
+      font-weight: 500;
+      color: var(--text-main);
+      word-break: break-word;
     }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
     .badge-paid {
-      color: #28a745;
-      font-weight: bold;
+      background-color: #d4edda;
+      color: #155724;
     }
+
     .badge-pending {
-      color: #dc3545;
-      font-weight: bold;
+      background-color: #f8d7da;
+      color: #721c24;
     }
-    .error {
-      color: #dc3545;
-      font-weight: bold;
+
+    .error-msg {
       text-align: center;
-      margin-top: 20px;
+      color: #dc3545;
+      font-weight: 600;
+      padding: 20px;
+      background: #ffffff;
+      border-radius: 8px;
+      border: 1px solid var(--border-color);
     }
   </style>
 </head>
@@ -112,24 +201,32 @@
     <div class="logo">
       <img src="SELENS Logo.png" alt="SELENS Logo">
     </div>
-    <h1>SELENS Student Fines Lookup</h1>
+    <div class="sub-logo">Society of Electrical Engineering Students</div>
+    <h1>Student Fines Lookup</h1>
   </div>
 
   <div class="container">
-    <div class="search-box">
-      <input type="text" id="searchInput" placeholder="Enter Student ID or Full Name..." />
-      <button onclick="searchFine()">Search</button>
+    <div class="search-card">
+      <div class="search-box">
+        <input 
+          type="text" 
+          id="searchInput" 
+          placeholder="Enter Student ID or Full Name..." 
+          onkeydown="if(event.key === 'Enter') searchFine()" 
+        />
+        <button onclick="searchFine()">Search</button>
+      </div>
     </div>
 
     <div id="result"></div>
   </div>
 
-  <!-- SheetJS CDN for parsing Excel files -->
+  <!-- SheetJS Library -->
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
   <script>
     let studentData = [];
 
-    // Automatically load fines.xlsx on page startup
+    // Load fines.xlsx automatically on page load
     window.addEventListener('DOMContentLoaded', () => {
       fetch('fines.xlsx')
         .then(res => {
@@ -137,16 +234,29 @@
           return res.arrayBuffer();
         })
         .then(buffer => {
-          const workbook = XLSX.read(buffer, { type: 'array' });
+          const workbook = XLSX.read(buffer, { type: 'array', cellDates: true });
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-          studentData = XLSX.utils.sheet_to_json(firstSheet, { defval: "" });
+          studentData = XLSX.utils.sheet_to_json(firstSheet, { defval: "N/A" });
         })
         .catch(err => {
           console.error("Data load error:", err);
           document.getElementById('result').innerHTML = 
-            '<p class="error">Unable to load fine records. Please make sure fines.xlsx exists in the repository.</p>';
+            '<div class="error-msg">Unable to load fine records. Ensure <code>fines.xlsx</code> exists in your repository.</div>';
         });
     });
+
+    // Parse Excel numeric dates to YYYY-MM-DD
+    function formatDate(val) {
+      if (!val || val === 'N/A') return 'N/A';
+      if (val instanceof Date) return val.toISOString().split('T')[0];
+      if (typeof val === 'number') {
+        const parsedDate = XLSX.SSF.parse_date_code(val);
+        if (parsedDate) {
+          return `${parsedDate.y}-${String(parsedDate.m).padStart(2, '0')}-${String(parsedDate.d).padStart(2, '0')}`;
+        }
+      }
+      return val;
+    }
 
     function searchFine() {
       const query = document.getElementById('searchInput').value.trim().toLowerCase();
@@ -154,40 +264,69 @@
       resultDiv.innerHTML = '';
 
       if (!query) {
-        resultDiv.innerHTML = '<p class="error">Please enter a Student ID or Name.</p>';
+        resultDiv.innerHTML = '<div class="error-msg">Please enter a Student ID or Full Name to search.</div>';
         return;
       }
 
-      // Matches against Student ID or Full Name
+      // Check all object values for matches to avoid header space mismatches
       const matches = studentData.filter(row => {
-        const idMatch = String(row['Student ID'] || '').toLowerCase().includes(query);
-        const nameMatch = String(row['Full Name'] || '').toLowerCase().includes(query);
-        return idMatch || nameMatch;
+        return Object.values(row).some(value => 
+          String(value).toLowerCase().includes(query)
+        );
       });
 
       if (matches.length > 0) {
         matches.forEach(record => {
-          const statusClass = String(record['Status']).toLowerCase() === 'paid' ? 'badge-paid' : 'badge-pending';
-          
+          const getVal = (key) => {
+            const foundKey = Object.keys(record).find(k => k.trim().toLowerCase() === key.toLowerCase());
+            return foundKey ? record[foundKey] : 'N/A';
+          };
+
+          const status = String(getVal('Status')).toLowerCase();
+          const badgeClass = status === 'paid' ? 'badge-paid' : 'badge-pending';
+
           const card = document.createElement('div');
           card.className = 'record-card';
           card.innerHTML = `
-            <h3>${record['Full Name'] || 'N/A'}</h3>
+            <div class="record-header">
+              <h3>${getVal('Full Name')}</h3>
+              <span class="badge ${badgeClass}">${getVal('Status')}</span>
+            </div>
             <div class="record-grid">
-              <p><strong>Student ID:</strong> ${record['Student ID'] || 'N/A'}</p>
-              <p><strong>TXN ID:</strong> ${record['TXN ID'] || 'N/A'}</p>
-              <p><strong>Email:</strong> ${record['Email Address'] || 'N/A'}</p>
-              <p><strong>Event / Offense:</strong> ${record['Event / Offense'] || 'N/A'}</p>
-              <p><strong>Fine Amount:</strong> ₱${record['Fine Amount'] || '0'}</p>
-              <p><strong>Date Issued:</strong> ${record['Date'] || 'N/A'}</p>
-              <p><strong>Status:</strong> <span class="${statusClass}">${record['Status'] || 'N/A'}</span></p>
-              <p><strong>Date Paid:</strong> ${record['Date Paid'] || 'N/A'}</p>
+              <div class="data-item">
+                <span class="data-label">Student ID</span>
+                <span class="data-value">${getVal('Student ID')}</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">TXN ID</span>
+                <span class="data-value">${getVal('TXN ID')}</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Email Address</span>
+                <span class="data-value">${getVal('Email Address')}</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Event / Offense</span>
+                <span class="data-value">${getVal('Event / Offense')}</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Fine Amount</span>
+                <span class="data-value" style="font-weight:700; color:#000;">₱${getVal('Fine Amount')}</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Date Issued</span>
+                <span class="data-value">${formatDate(getVal('Date'))}</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Date Paid</span>
+                <span class="data-value">${formatDate(getVal('Date Paid'))}</span>
+              </div>
             </div>
           `;
           resultDiv.appendChild(card);
         });
       } else {
-        resultDiv.innerHTML = '<p class="error">No record found matching your query.</p>';
+        resultDiv.innerHTML = '<div class="error-msg">No record found matching your search.</div>';
       }
     }
   </script>
