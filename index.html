@@ -32,7 +32,7 @@
       flex-direction: column;
     }
 
-    /* Header Container */
+    /* Header Styling */
     .header {
       position: relative;
       background-color: var(--dark-header);
@@ -89,7 +89,7 @@
       color: #ffffff;
     }
 
-    /* Search Box in Header */
+    /* Search Box */
     .search-card {
       width: 100%;
       max-width: 450px;
@@ -139,7 +139,7 @@
       box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
     }
 
-    /* Main Container */
+    /* Container for Results */
     .container {
       max-width: 1280px;
       margin: 30px auto;
@@ -148,7 +148,7 @@
       width: 100%;
     }
 
-    /* Record Card - Horizontal Layout */
+    /* Record Cards */
     .record-card {
       background-color: var(--card-bg);
       border-radius: 10px;
@@ -174,7 +174,7 @@
       color: var(--dark-header);
     }
 
-    /* Horizontal breakdown fields */
+    /* Fines Grid Breakdown */
     .record-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -231,7 +231,7 @@
       border: 1px solid var(--border-color);
     }
 
-    /* Footer Section */
+    /* Footer */
     .footer {
       background-color: var(--dark-header);
       color: #a0a0a0;
@@ -254,18 +254,19 @@
       color: #777;
     }
 
-    /* Desktop & Laptop Enhancements (≥ 768px) */
+    /* Desktop & Laptop Mode (≥ 768px) */
     @media (min-width: 768px) {
       .header-content {
         flex-direction: row;
         justify-content: space-between;
+        align-items: center;
       }
 
       .search-card {
         margin-bottom: 0;
       }
 
-      /* Single-line Horizontal Breakdown across 7 distinct columns */
+      /* Single horizontal row across 7 columns for fines data */
       .record-grid {
         grid-template-columns: 1.1fr 1.1fr 1.8fr 1.8fr 1fr 1fr 1fr;
         align-items: center;
@@ -276,6 +277,7 @@
 <body>
   <div class="header">
     <div class="header-content">
+      <!-- Title and Org Name Section -->
       <div class="brand-section">
         <div class="logo">
           <img src="SELENS Logo.png" alt="SELENS Logo">
@@ -286,7 +288,7 @@
         </div>
       </div>
 
-      <!-- Search bar positioned alongside headers on desktop -->
+      <!-- Search Bar Placed Beside Title Header on Desktop -->
       <div class="search-card">
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Enter Student ID or Full Name..." onkeydown="if(event.key === 'Enter') searchFine()" />
