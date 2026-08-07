@@ -9,7 +9,6 @@
       --bg-color: #f8f9fa;
       --card-bg: #ffffff;
       --primary-yellow: #ffcc00;
-      --glow-yellow: #ffe566;
       --hover-yellow: #e6b800;
       --dark-header: #0a0a0c;
       --text-main: #212529;
@@ -33,103 +32,95 @@
       flex-direction: column;
     }
 
-    /* Futuristic Header Design */
+    /* Header Container */
     .header {
       position: relative;
       background-color: var(--dark-header);
       background-image: linear-gradient(var(--cyber-grid) 1px, transparent 1px), linear-gradient(90deg, var(--cyber-grid) 1px, transparent 1px);
       background-size: 24px 24px;
       color: #ffffff;
-      padding: 35px 20px 30px;
-      text-align: center;
+      padding: 24px 30px;
       border-bottom: 4px solid var(--primary-yellow);
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-      overflow: hidden;
     }
 
-    /* Subtle Futuristic Background Glow Behind Logo */
-    .header::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 250px;
-      height: 250px;
-      background: radial-gradient(circle, rgba(255, 204, 0, 0.12) 0%, transparent 70%);
-      pointer-events: none;
+    .header-content {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-align: left;
     }
 
     .header .logo img {
-      position: relative;
-      max-width: 135px;
+      max-width: 65px;
       height: auto;
-      margin-bottom: 8px;
-      filter: drop-shadow(0 0 10px rgba(255, 204, 0, 0.3));
+      filter: drop-shadow(0 0 8px rgba(255, 204, 0, 0.3));
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
     }
 
     .sub-logo {
-      position: relative;
       color: var(--primary-yellow);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      margin-bottom: 12px;
       text-shadow: 0 0 8px rgba(255, 204, 0, 0.4);
+      margin-bottom: 2px;
     }
 
     .header h1 {
-      position: relative;
-      font-size: 24px;
+      font-size: 20px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 0.5px;
       text-transform: uppercase;
+      color: #ffffff;
     }
 
-    /* Layout & Containers */
-    .container {
-      max-width: 1100px;
-      margin: 35px auto;
-      padding: 0 20px;
-      flex: 1;
-      width: 100%;
-    }
-
+    /* Search Box in Header */
     .search-card {
-      background: var(--card-bg);
-      padding: 24px;
-      border-radius: 12px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-      margin-bottom: 25px;
-      border: 1px solid var(--border-color);
+      width: 100%;
+      max-width: 450px;
     }
 
     .search-box {
       display: flex;
-      gap: 12px;
+      gap: 8px;
     }
 
     input[type="text"] {
       flex: 1;
-      padding: 14px 18px;
-      font-size: 15px;
-      border: 2px solid var(--border-color);
+      padding: 12px 16px;
+      font-size: 14px;
+      border: 2px solid #333;
       border-radius: 8px;
       outline: none;
       transition: all 0.2s ease;
-      background-color: #fafafa;
+      background-color: #1a1a1e;
+      color: #ffffff;
     }
 
     input[type="text"]:focus {
       border-color: var(--primary-yellow);
-      background-color: #ffffff;
+      background-color: #222226;
       box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.25);
     }
 
     button {
-      padding: 14px 28px;
-      font-size: 15px;
+      padding: 12px 22px;
+      font-size: 14px;
       font-weight: 700;
       cursor: pointer;
       background-color: var(--primary-yellow);
@@ -139,6 +130,7 @@
       transition: all 0.2s ease;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      white-space: nowrap;
     }
 
     button:hover {
@@ -147,35 +139,46 @@
       box-shadow: 0 4px 12px rgba(255, 204, 0, 0.3);
     }
 
+    /* Main Container */
+    .container {
+      max-width: 1280px;
+      margin: 30px auto;
+      padding: 0 20px;
+      flex: 1;
+      width: 100%;
+    }
+
+    /* Record Card - Horizontal Layout */
     .record-card {
       background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 24px;
-      margin-top: 16px;
+      border-radius: 10px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
       border: 1px solid var(--border-color);
       border-left: 6px solid var(--primary-yellow);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
     }
 
     .record-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid var(--border-color);
-      padding-bottom: 14px;
       margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .record-header h3 {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 700;
       color: var(--dark-header);
     }
 
+    /* Horizontal breakdown fields */
     .record-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 14px 24px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px 20px;
     }
 
     .data-item {
@@ -184,16 +187,16 @@
     }
 
     .data-label {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.5px;
       color: var(--text-muted);
-      margin-bottom: 3px;
+      margin-bottom: 2px;
     }
 
     .data-value {
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 500;
       color: var(--text-main);
       word-break: break-word;
@@ -203,7 +206,7 @@
       display: inline-block;
       padding: 4px 12px;
       border-radius: 20px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
     }
@@ -222,13 +225,13 @@
       text-align: center;
       color: #dc3545;
       font-weight: 600;
-      padding: 20px;
+      padding: 24px;
       background: #ffffff;
       border-radius: 8px;
       border: 1px solid var(--border-color);
     }
 
-    /* Footer / Disclaimer Section */
+    /* Footer Section */
     .footer {
       background-color: var(--dark-header);
       color: #a0a0a0;
@@ -251,56 +254,49 @@
       color: #777;
     }
 
-    /* Desktop & Laptop Layout (Screen width 768px and up) */
+    /* Desktop & Laptop Enhancements (≥ 768px) */
     @media (min-width: 768px) {
-      .container {
-        display: grid;
-        grid-template-columns: 320px 1fr;
-        gap: 24px;
-        align-items: start;
+      .header-content {
+        flex-direction: row;
+        justify-content: space-between;
       }
 
       .search-card {
-        position: sticky;
-        top: 20px;
         margin-bottom: 0;
       }
 
-      .search-box {
-        flex-direction: column;
-      }
-
-      .search-box button {
-        width: 100%;
-      }
-
-      .record-card {
-        margin-top: 0;
-        margin-bottom: 16px;
-      }
-
+      /* Single-line Horizontal Breakdown across 7 distinct columns */
       .record-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: 1.1fr 1.1fr 1.8fr 1.8fr 1fr 1fr 1fr;
+        align-items: center;
       }
     }
   </style>
 </head>
 <body>
   <div class="header">
-    <div class="logo">
-      <img src="SELENS Logo.png" alt="SELENS Logo">
+    <div class="header-content">
+      <div class="brand-section">
+        <div class="logo">
+          <img src="SELENS Logo.png" alt="SELENS Logo">
+        </div>
+        <div class="brand-text">
+          <span class="sub-logo">Society of Electrical Engineering Students</span>
+          <h1>Student Fines Lookup</h1>
+        </div>
+      </div>
+
+      <!-- Search bar positioned alongside headers on desktop -->
+      <div class="search-card">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Enter Student ID or Full Name..." onkeydown="if(event.key === 'Enter') searchFine()" />
+          <button onclick="searchFine()">Search</button>
+        </div>
+      </div>
     </div>
-    <div class="sub-logo">Society of Electrical Engineering Students</div>
-    <h1>Student Fines Lookup</h1>
   </div>
 
   <div class="container">
-    <div class="search-card">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="Enter Student ID or Full Name..." onkeydown="if(event.key === 'Enter') searchFine()" />
-        <button onclick="searchFine()">Search</button>
-      </div>
-    </div>
     <div id="result"></div>
   </div>
 
@@ -357,7 +353,6 @@
         return;
       }
 
-      // Check all object values to handle column spacing variations seamlessly
       const matches = studentData.filter(row => {
         return Object.values(row).some(value => 
           String(value).toLowerCase().includes(query)
