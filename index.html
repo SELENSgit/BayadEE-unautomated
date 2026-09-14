@@ -266,9 +266,9 @@
         margin-bottom: 0;
       }
 
-      /* Grid across 6 columns matching Excel structure */
+      /* 7-column layout matching Excel columns A through G/H */
       .record-grid {
-        grid-template-columns: 1.1fr 1.1fr 2fr 1.2fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr 1.6fr 1.6fr 1fr 1fr 1fr;
         align-items: center;
       }
     }
@@ -277,7 +277,6 @@
 <body>
   <div class="header">
     <div class="header-content">
-      <!-- Title and Org Name Section -->
       <div class="brand-section">
         <div class="logo">
           <img src="SELENS Logo.png" alt="SELENS Logo">
@@ -288,7 +287,6 @@
         </div>
       </div>
 
-      <!-- Search Bar Placed Beside Title Header on Desktop -->
       <div class="search-card">
         <div class="search-box">
           <input type="text" id="searchInput" placeholder="Enter Student ID or Full Name..." onkeydown="if(event.key === 'Enter') searchFine()" />
@@ -323,9 +321,10 @@
         })
         .then(buffer => {
           const workbook = XLSX.read(buffer, { type: 'array', cellDates: true });
-          const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          // Explicitly targeted FinesLog sheet if named, otherwise defaults to sheet 0
+          const sheetName = workbook.SheetNames.includes('FinesLog') ? 'FinesLog' : workbook.SheetNames[0];
+          const firstSheet = workbook.Sheets[sheetName];
           
-          // Row 1 contains A1 (TXN ID), B1 (Student ID), etc.
           studentData = XLSX.utils.sheet_to_json(firstSheet, { defval: "N/A" });
         })
         .catch(err => {
@@ -334,7 +333,7 @@
         });
     });
 
-    // Format Excel dates to YYYY-MM-DD
+    // Format dates cleanly
     function formatDate(val) {
       if (!val || val === 'N/A') return 'N/A';
       if (val instanceof Date) return val.toISOString().split('T')[0];
@@ -357,18 +356,18 @@
         return;
       }
 
+      // Case-insensitive lookup matching Student ID or Name
       const matches = studentData.filter(row => {
-        return Object.values(row).some(value => 
-          String(value).toLowerCase().includes(query)
-        );
+        const studentId = String(row['Student ID'] || '').toLowerCase();
+        const fullName = String(row['Full Name'] || '').toLowerCase();
+        const txnId = String(row['TXN ID'] || '').toLowerCase();
+        
+        return studentId.includes(query) || fullName.includes(query) || txnId.includes(query);
       });
 
       if (matches.length > 0) {
         matches.forEach(record => {
-          const getVal = (key) => {
-            const foundKey = Object.keys(record).find(k => k.trim().toLowerCase() === key.toLowerCase());
-            return foundKey ? record[foundKey] : 'N/A';
-          };
+          const getVal = (key) => record[key] !== undefined ? record[key] : 'N/A';
 
           const status = String(getVal('Status')).toLowerCase();
           const badgeClass = status === 'paid' ? 'badge-paid' : 'badge-pending';
@@ -388,6 +387,10 @@
               <div class="data-item">
                 <span class="data-label">Student ID</span>
                 <span class="data-value">${getVal('Student ID')}</span>
+              </div>
+              <div class="data-item">
+                <span class="data-label">Email Address</span>
+                <span class="data-value">${getVal('Email Address')}</span>
               </div>
               <div class="data-item">
                 <span class="data-label">Event / Offense</span>
