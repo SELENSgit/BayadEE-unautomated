@@ -266,9 +266,9 @@
         margin-bottom: 0;
       }
 
-      /* Single horizontal row across 7 columns for fines data */
+      /* Grid across 6 columns matching Excel structure */
       .record-grid {
-        grid-template-columns: 1.1fr 1.1fr 1.8fr 1.8fr 1fr 1fr 1fr;
+        grid-template-columns: 1.1fr 1.1fr 2fr 1.2fr 1fr 1fr;
         align-items: center;
       }
     }
@@ -324,6 +324,8 @@
         .then(buffer => {
           const workbook = XLSX.read(buffer, { type: 'array', cellDates: true });
           const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
+          
+          // Row 1 contains A1 (TXN ID), B1 (Student ID), etc.
           studentData = XLSX.utils.sheet_to_json(firstSheet, { defval: "N/A" });
         })
         .catch(err => {
@@ -380,16 +382,12 @@
             </div>
             <div class="record-grid">
               <div class="data-item">
-                <span class="data-label">Student ID</span>
-                <span class="data-value">${getVal('Student ID')}</span>
-              </div>
-              <div class="data-item">
                 <span class="data-label">TXN ID</span>
                 <span class="data-value">${getVal('TXN ID')}</span>
               </div>
               <div class="data-item">
-                <span class="data-label">Email Address</span>
-                <span class="data-value">${getVal('Email Address')}</span>
+                <span class="data-label">Student ID</span>
+                <span class="data-value">${getVal('Student ID')}</span>
               </div>
               <div class="data-item">
                 <span class="data-label">Event / Offense</span>
